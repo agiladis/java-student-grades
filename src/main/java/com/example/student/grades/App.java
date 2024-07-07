@@ -1,8 +1,35 @@
 package com.example.student.grades;
 
+import java.util.Scanner;
+
 public class App {
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+        boolean isProgramRun = false;
+        do {
+            mainMenu();
+            System.out.print("Pilih: ");
+            choice = sc.nextInt();
 
+            switch (choice) {
+                case 0:
+                    System.out.println("THANK YOU! SEE YA!");
+                    isProgramRun = false;
+                    break;
+                case 1:
+                    System.out.println("Pilih menu 1");
+                    break;
+                case 2:
+                    System.out.println("Pilih menu 2");
+                    break;
+                case 3:
+                    System.out.println("Pilih menu 3");
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid");
+            }
+        } while (isProgramRun);
     }
 
     private static void mainMenu() {
