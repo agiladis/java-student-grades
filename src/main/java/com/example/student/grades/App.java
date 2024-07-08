@@ -1,23 +1,28 @@
 package com.example.student.grades;
 
+import lombok.AllArgsConstructor;
+
 import java.util.Scanner;
 
+@AllArgsConstructor
 public class App {
     private static final String SCHOOL_FILE_PATH = "C:\\programing\\java\\java-student-grades\\src\\main\\resources\\data_sekolah.csv";
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int choice;
-        boolean isProgramRun = false;
-        do {
-            mainMenu();
+    private final CSVFile csvFile;
+    private final Scanner scanner;
+
+    public void run() {
+        boolean isProgramRunning = true;
+
+        while (isProgramRunning) {
+            printMainMenu();
             System.out.print("Pilih: ");
-            choice = sc.nextInt();
+            int choice = scanner.nextInt();
 
             switch (choice) {
                 case 0:
                     System.out.println("THANK YOU! SEE YA!");
-                    isProgramRun = false;
+                    isProgramRunning = false;
                     break;
                 case 1:
                     calculateAndGenerateModusTxt();
@@ -31,7 +36,7 @@ public class App {
                 default:
                     System.out.println("Pilihan tidak valid");
             }
-        } while (isProgramRun);
+        }
     }
 
     private static void calculateAndGenerateModusTxt() {
@@ -40,7 +45,7 @@ public class App {
         csv.reader(SCHOOL_FILE_PATH);
     }
 
-    private static void mainMenu() {
+    private static void printMainMenu() {
         System.out.println("--------------------------------------------------------------");
         System.out.println("Aplikasi Pengolah Nilai Siswa");
         System.out.println("--------------------------------------------------------------");
@@ -51,7 +56,7 @@ public class App {
         System.out.println("0. Exit");
     }
 
-    private static void succeedAlert(String fileDir) {
+    private static void printSucceedAlert(String fileDir) {
         System.out.println("--------------------------------------------------------------");
         System.out.println("Aplikasi Pengolah Nilai Siswa");
         System.out.println("--------------------------------------------------------------");
@@ -61,7 +66,7 @@ public class App {
         System.out.println("1. Kembali ke menu utama");
     }
 
-    private static void failedAlert() {
+    private static void printFailedAlert() {
         System.out.println("--------------------------------------------------------------");
         System.out.println("Aplikasi Pengolah Nilai Siswa");
         System.out.println("--------------------------------------------------------------");
@@ -69,5 +74,13 @@ public class App {
         System.out.println("");
         System.out.println("0. Exit");
         System.out.println("1. Kembali ke menu utama");
+    }
+
+    public static void main(String[] args) {
+        CSVFile csvFile = new CSVFile();
+        Scanner scanner = new Scanner(System.in);
+        App app = new App(csvFile, scanner);
+        app.run();
+        scanner.close();
     }
 }
