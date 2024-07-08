@@ -3,6 +3,8 @@ package com.example.student.grades;
 import java.util.Scanner;
 
 public class App {
+    private static final String SCHOOL_FILE_PATH = "C:\\programing\\java\\java-student-grades\\src\\main\\resources\\data_sekolah.csv";
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int choice;
@@ -18,7 +20,7 @@ public class App {
                     isProgramRun = false;
                     break;
                 case 1:
-                    System.out.println("Pilih menu 1");
+                    calculateAndGenerateModusTxt();
                     break;
                 case 2:
                     System.out.println("Pilih menu 2");
@@ -30,6 +32,12 @@ public class App {
                     System.out.println("Pilihan tidak valid");
             }
         } while (isProgramRun);
+    }
+
+    private static void calculateAndGenerateModusTxt() {
+        CSVFile csv = new CSVFile();
+
+        csv.reader(SCHOOL_FILE_PATH);
     }
 
     private static void mainMenu() {
