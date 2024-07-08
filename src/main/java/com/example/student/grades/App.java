@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 
 import java.util.Scanner;
 
-@AllArgsConstructor
+@AllArgsConstructor // Dependency Injection CSVFile and Scanner
 public class App {
-    private static final String SCHOOL_FILE_PATH = "C:\\programing\\java\\java-student-grades\\src\\main\\resources\\data_sekolah.csv";
+    private static final String SCHOOL_FILE_PATH = Configuration.getProperty("school.file.path");
 
     private final CSVFile csvFile;
     private final Scanner scanner;
@@ -39,13 +39,11 @@ public class App {
         }
     }
 
-    private static void calculateAndGenerateModusTxt() {
-        CSVFile csv = new CSVFile();
-
-        csv.reader(SCHOOL_FILE_PATH);
+    private void calculateAndGenerateModusTxt() {
+        csvFile.reader(SCHOOL_FILE_PATH);
     }
 
-    private static void printMainMenu() {
+    private void printMainMenu() {
         System.out.println("--------------------------------------------------------------");
         System.out.println("Aplikasi Pengolah Nilai Siswa");
         System.out.println("--------------------------------------------------------------");
@@ -56,7 +54,7 @@ public class App {
         System.out.println("0. Exit");
     }
 
-    private static void printSucceedAlert(String fileDir) {
+    private void printSucceedAlert(String fileDir) {
         System.out.println("--------------------------------------------------------------");
         System.out.println("Aplikasi Pengolah Nilai Siswa");
         System.out.println("--------------------------------------------------------------");
@@ -66,7 +64,7 @@ public class App {
         System.out.println("1. Kembali ke menu utama");
     }
 
-    private static void printFailedAlert() {
+    private void printFailedAlert() {
         System.out.println("--------------------------------------------------------------");
         System.out.println("Aplikasi Pengolah Nilai Siswa");
         System.out.println("--------------------------------------------------------------");
