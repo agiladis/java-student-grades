@@ -27,7 +27,12 @@ public class BasicStatisticCalculator implements StatisticCalculator {
 
     @Override
     public double mean(List<Double> numbers) {
-        return 0;
+        double sumOfNumber = 0;
+        for (double number : numbers) {
+            sumOfNumber += number;
+        }
+
+        return sumOfNumber/numbers.size();
     }
 
     @Override
