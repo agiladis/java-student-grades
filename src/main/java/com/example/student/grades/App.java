@@ -2,6 +2,7 @@ package com.example.student.grades;
 
 import lombok.AllArgsConstructor;
 
+import java.util.List;
 import java.util.Scanner;
 
 @AllArgsConstructor // Dependency Injection CSVFile and Scanner
@@ -40,7 +41,12 @@ public class App {
     }
 
     private void calculateAndGenerateModusTxt() {
-        csvFile.reader(SCHOOL_FILE_PATH);
+        List<Double> grades;
+        StatisticCalculator statisticCalculator = new BasicStatisticCalculator();
+
+        grades = csvFile.read(SCHOOL_FILE_PATH);
+        double mode = statisticCalculator.mode(grades);
+        printSucceedAlert("belum generate");
     }
 
     private void printMainMenu() {
