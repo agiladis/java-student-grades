@@ -9,33 +9,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Getter
 public class CSVFile {
     private static final String DELIMITER = ";";
-    private final List<Integer> grades = new ArrayList<>();
-    Logger logger = Logger.getLogger(getClass().getName());
+    private static final Logger logger = Logger.getLogger(CSVFile.class.getName());
 
-    public void reader(String fileName) {
+    public List<Double> read(String fileName) {
+        List<Double> grades = new ArrayList<>();
+
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                parseLine(line);
+                parseLine(line, grades);
             }
         } catch (IOException e) {
             logger.severe("IOException occurred: " + e.getMessage());
         }
+
+        return grades;
     }
 
-    private void parseLine(String line) {
+    private void parseLine(String line, List<Double> grades) {
         String[] values = line.split(DELIMITER);
         for (int i = 1; i < values.length; i++) {
-            parseValue(values[i]);
+            parseValue(values[i], grades);
         }
     }
 
-    private void parseValue(String value) {
+    private void parseValue(String value, List<Double> grades) {
         try {
-            this.grades.add(Integer.valueOf(value.trim()));
+            grades.add(Double.valueOf(value.trim()));
         } catch (NumberFormatException e) {
             logger.info("Invalid number format: " + value);
         }
