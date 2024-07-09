@@ -1,8 +1,6 @@
 package com.example.student.grades;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BasicStatisticCalculator implements StatisticCalculator {
 
@@ -37,6 +35,18 @@ public class BasicStatisticCalculator implements StatisticCalculator {
 
     @Override
     public double median(List<Double> numbers) {
-        return 0;
+        Collections.sort(numbers);
+
+        int numbersSize = numbers.size();
+        if (numbersSize % 2 == 0) {
+            int index1 = numbersSize / 2 - 1;
+            int index2 = numbersSize / 2;
+
+            return  (numbers.get(index1) + numbers.get(index2)) / 2;
+        } else {
+            int index = numbersSize / 2;
+
+            return numbers.get(index);
+        }
     }
 }
