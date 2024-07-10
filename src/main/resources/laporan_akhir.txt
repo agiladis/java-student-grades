@@ -1,0 +1,14 @@
+Berikut Hasil Rekap Nilai Ujian Sekolah
+
+Mean		: 8.32
+Modus		: 7.00
+Median		: 8.00
+
+Sebaran Nilai Seluruh Siswa:
+Nilai      |	 Frekuensi
+<6.0       |	 1 
+6.0        |	 2 
+7.0        |	 62 
+8.0        |	 42 
+9.0        |	 50 
+10.0       |	 41 
