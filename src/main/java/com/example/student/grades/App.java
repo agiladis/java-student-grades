@@ -3,14 +3,19 @@ package com.example.student.grades;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 @AllArgsConstructor // Dependency Injection CSVFile and Scanner
 public class App {
     private static final String SCHOOL_FILE_PATH = Configuration.getProperty("school.file.path");
+    private static final String STATISTICS_FILE_PATH = Configuration.getProperty("statistic.file.path");
+    private static final String FREQUENCY_FILE_PATH = Configuration.getProperty("frequency.file.path");
 
     private final CSVFile csvFile;
+    private final TXTFile txtFile;
     private final Scanner scanner;
+    private final StatisticCalculator basicStatisticCalculator;
 
     public void run() {
         boolean isProgramRunning = true;
@@ -19,17 +24,29 @@ public class App {
             printMainMenu();
             System.out.print("Pilih: ");
             int choice = scanner.nextInt();
+            int secondChoice;
 
             switch (choice) {
                 case 0:
-                    System.out.println("THANK YOU! SEE YA!");
                     isProgramRunning = false;
                     break;
                 case 1:
-                    calculateAndGenerateModusTxt();
+                    generateFrequencyDataFile();
+                    System.out.print("Pilih: ");
+                    secondChoice = scanner.nextInt();
+
+                    if (secondChoice == 0) {
+                        isProgramRunning = false;
+                    }
                     break;
                 case 2:
-                    System.out.println("Pilih menu 2");
+                    generateMeanMedianModeFile();
+                    System.out.print("Pilih: ");
+                    secondChoice = scanner.nextInt();
+
+                    if (secondChoice == 0) {
+                        isProgramRunning = false;
+                    }
                     break;
                 case 3:
                     System.out.println("Pilih menu 3");
@@ -38,15 +55,49 @@ public class App {
                     System.out.println("Pilihan tidak valid");
             }
         }
+
+        System.out.println("THANK YOU! SEE YA!");
     }
 
-    private void calculateAndGenerateModusTxt() {
-        List<Double> grades;
-        StatisticCalculator statisticCalculator = new BasicStatisticCalculator();
+    private void generateMeanMedianModeFile() {
+        List<Double> data = csvFile.read(SCHOOL_FILE_PATH);
+        double mean = basicStatisticCalculator.mean(data);
+        double median = basicStatisticCalculator.median(data);
+        double mode = basicStatisticCalculator.mode(data);
 
-        grades = csvFile.read(SCHOOL_FILE_PATH);
-        double mode = statisticCalculator.mode(grades);
-        printSucceedAlert("belum generate");
+        // content of file txt
+        StringBuilder content = new StringBuilder();
+        content.append("Berikut Hasil Pengolahan Nilai:\n\n");
+        content.append("Berikut hasil sebaran data nilai\n");
+        content.append(String.format("Mean: %.2f\n", mean));
+        content.append(String.format("Median: %.2f\n", median));
+        content.append(String.format("Modus: %.2f\n", mode));
+
+        if (txtFile.wrtie(STATISTICS_FILE_PATH, String.valueOf(content))) {
+            printSucceedAlert(STATISTICS_FILE_PATH);
+        } else {
+            printFailedAlert();
+        }
+    }
+
+    private void generateFrequencyDataFile() {
+        List<Double> data = csvFile.read(SCHOOL_FILE_PATH);
+        Map<Double, Integer> frequencyMap;
+
+        // content of file txt
+        StringBuilder content = new StringBuilder();
+        content.append("Berikut Hasil Pengolahan Nilai:\n\n");
+        content.append("Nilai\t |\t Frekuensi\n");
+
+        frequencyMap.forEach((value, frequency) -> {
+            content.append(String.format("%-16s\t| %-8s\n", value, frequency));
+        });
+
+        if (txtFile.wrtie(FREQUENCY_FILE_PATH, String.valueOf(content))) {
+            printSucceedAlert(FREQUENCY_FILE_PATH);
+        } else {
+            printFailedAlert();
+        }
     }
 
     private void printMainMenu() {
@@ -82,8 +133,11 @@ public class App {
 
     public static void main(String[] args) {
         CSVFile csvFile = new CSVFile();
+        TXTFile txtFile = new TXTFile();
         Scanner scanner = new Scanner(System.in);
-        App app = new App(csvFile, scanner);
+        StatisticCalculator basicStatisticCalculator = new BasicStatisticCalculator();
+
+        App app = new App(csvFile, txtFile, scanner, basicStatisticCalculator);
         app.run();
         scanner.close();
     }
