@@ -1,7 +1,5 @@
 package com.example.student.grades;
 
-import lombok.Getter;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

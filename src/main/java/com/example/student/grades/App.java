@@ -69,9 +69,9 @@ public class App {
         StringBuilder content = new StringBuilder();
         content.append("Berikut Hasil Pengolahan Nilai:\n\n");
         content.append("Berikut hasil sebaran data nilai\n");
-        content.append(String.format("Mean: %.2f\n", mean));
-        content.append(String.format("Median: %.2f\n", median));
-        content.append(String.format("Modus: %.2f\n", mode));
+        content.append(String.format("Mean: %.2f%n", mean));
+        content.append(String.format("Median: %.2f%n", median));
+        content.append(String.format("Modus: %.2f%n", mode));
 
         if (txtFile.wrtie(STATISTICS_FILE_PATH, String.valueOf(content))) {
             printSucceedAlert(STATISTICS_FILE_PATH);
@@ -87,11 +87,9 @@ public class App {
         // content of file txt
         StringBuilder content = new StringBuilder();
         content.append("Berikut Hasil Pengolahan Nilai:\n\n");
-        content.append(String.format("%-10s |\t Frekuensi\n", "Nilai"));
+        content.append(String.format("%-10s |\t Frekuensi%n", "Nilai"));
 
-        frequencyDistributionMap.forEach((value, frequency) -> {
-            content.append(String.format("%-10s |\t %d \n", value, frequency));
-        });
+        frequencyDistributionMap.forEach((value, frequency) -> content.append(String.format("%-10s |\t %d %n", value, frequency)));
 
         if (txtFile.wrtie(FREQUENCY_FILE_PATH, String.valueOf(content))) {
             printSucceedAlert(FREQUENCY_FILE_PATH);
