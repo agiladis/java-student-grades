@@ -49,4 +49,21 @@ public class BasicStatisticCalculator implements StatisticCalculator {
             return numbers.get(index);
         }
     }
+
+    @Override
+    public Map<String, Integer> frequencyDistribution(List<Double> numbers) {
+        Collections.sort(numbers);
+        Map<String, Integer> frequencyDistributionData = new LinkedHashMap<>();
+
+        for (double number : numbers) {
+            if (number < 6.0) {
+                frequencyDistributionData.put("<6.0", frequencyDistributionData.getOrDefault("<6.0", 0) + 1);
+            } else {
+                String key = String.valueOf(number);
+                frequencyDistributionData.put(key, frequencyDistributionData.getOrDefault(key, 0) + 1);
+            }
+        }
+
+        return frequencyDistributionData;
+    }
 }

@@ -82,15 +82,15 @@ public class App {
 
     private void generateFrequencyDataFile() {
         List<Double> data = csvFile.read(SCHOOL_FILE_PATH);
-        Map<Double, Integer> frequencyMap;
+        Map<String, Integer> frequencyDistributionMap = basicStatisticCalculator.frequencyDistribution(data);
 
         // content of file txt
         StringBuilder content = new StringBuilder();
         content.append("Berikut Hasil Pengolahan Nilai:\n\n");
-        content.append("Nilai\t |\t Frekuensi\n");
+        content.append(String.format("%-10s |\t Frekuensi\n", "Nilai"));
 
-        frequencyMap.forEach((value, frequency) -> {
-            content.append(String.format("%-16s\t| %-8s\n", value, frequency));
+        frequencyDistributionMap.forEach((value, frequency) -> {
+            content.append(String.format("%-10s |\t %d \n", value, frequency));
         });
 
         if (txtFile.wrtie(FREQUENCY_FILE_PATH, String.valueOf(content))) {
