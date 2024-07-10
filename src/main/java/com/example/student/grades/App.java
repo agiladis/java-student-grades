@@ -3,6 +3,7 @@ package com.example.student.grades;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 @AllArgsConstructor // Dependency Injection CSVFile and Scanner
@@ -23,18 +24,25 @@ public class App {
             printMainMenu();
             System.out.print("Pilih: ");
             int choice = scanner.nextInt();
+            int secondChoice;
 
             switch (choice) {
                 case 0:
                     isProgramRunning = false;
                     break;
                 case 1:
-                    calculateAndGenerateModusTxt();
+                    generateFrequencyDataFile();
+                    System.out.print("Pilih: ");
+                    secondChoice = scanner.nextInt();
+
+                    if (secondChoice == 0) {
+                        isProgramRunning = false;
+                    }
                     break;
                 case 2:
                     generateMeanMedianModeFile();
                     System.out.print("Pilih: ");
-                    int secondChoice = scanner.nextInt();
+                    secondChoice = scanner.nextInt();
 
                     if (secondChoice == 0) {
                         isProgramRunning = false;
@@ -57,7 +65,7 @@ public class App {
         double median = basicStatisticCalculator.median(data);
         double mode = basicStatisticCalculator.mode(data);
 
-        // content
+        // content of file txt
         StringBuilder content = new StringBuilder();
         content.append("Berikut Hasil Pengolahan Nilai:\n\n");
         content.append("Berikut hasil sebaran data nilai\n");
@@ -72,13 +80,24 @@ public class App {
         }
     }
 
-    private void calculateAndGenerateModusTxt() {
-        List<Double> grades;
-        StatisticCalculator statisticCalculator = new BasicStatisticCalculator();
+    private void generateFrequencyDataFile() {
+        List<Double> data = csvFile.read(SCHOOL_FILE_PATH);
+        Map<Double, Integer> frequencyMap;
 
-        grades = csvFile.read(SCHOOL_FILE_PATH);
-        double mode = statisticCalculator.mode(grades);
-        printSucceedAlert("belum generate");
+        // content of file txt
+        StringBuilder content = new StringBuilder();
+        content.append("Berikut Hasil Pengolahan Nilai:\n\n");
+        content.append("Nilai\t |\t Frekuensi\n");
+
+        frequencyMap.forEach((value, frequency) -> {
+            content.append(String.format("%-16s\t| %-8s\n", value, frequency));
+        });
+
+        if (txtFile.wrtie(FREQUENCY_FILE_PATH, String.valueOf(content))) {
+            printSucceedAlert(FREQUENCY_FILE_PATH);
+        } else {
+            printFailedAlert();
+        }
     }
 
     private void printMainMenu() {
