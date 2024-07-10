@@ -11,6 +11,7 @@ public class App {
     private static final String SCHOOL_FILE_PATH = Configuration.getProperty("school.file.path");
     private static final String STATISTICS_FILE_PATH = Configuration.getProperty("statistic.file.path");
     private static final String FREQUENCY_FILE_PATH = Configuration.getProperty("frequency.file.path");
+    private static final String REPORT_FILE_PATH = Configuration.getProperty("report.file.path");
 
     private final CSVFile csvFile;
     private final TXTFile txtFile;
@@ -49,7 +50,13 @@ public class App {
                     }
                     break;
                 case 3:
-                    System.out.println("Pilih menu 3");
+                    generateReportFile();
+                    System.out.print("Pilih: ");
+                    secondChoice = scanner.nextInt();
+
+                    if (secondChoice == 0) {
+                        isProgramRunning = false;
+                    }
                     break;
                 default:
                     System.out.println("Pilihan tidak valid");
@@ -57,6 +64,37 @@ public class App {
         }
 
         System.out.println("THANK YOU! SEE YA!");
+    }
+
+    private void generateReportFile() {
+        List<Double> data = csvFile.read(SCHOOL_FILE_PATH);
+        Map<String, Integer> frequencyDistributionMap = basicStatisticCalculator.frequencyDistribution(data);
+        double mean = basicStatisticCalculator.mean(data);
+        double median = basicStatisticCalculator.median(data);
+        double mode = basicStatisticCalculator.mode(data);
+
+        // content of file txt
+        StringBuilder content = new StringBuilder();
+        content.append("Berikut Hasil Rekap Nilai Ujian Sekolah\n\n");
+
+        // Statistical values
+        content.append(String.format("Mean\t\t: %.2f%n", mean));
+        content.append(String.format("Modus\t\t: %.2f%n", mode));
+        content.append(String.format("Median\t\t: %.2f%n%n", median));
+
+        // Frequency distribution header
+        content.append("Sebaran Nilai Seluruh Siswa:\n");
+        content.append(String.format("%-10s |\t Frekuensi%n", "Nilai"));
+
+        // Frequency distribution values
+        frequencyDistributionMap.forEach((value, frequency) -> content.append(String.format("%-10s |\t %d %n", value, frequency)));
+
+        // write file
+        if (txtFile.wrtie(REPORT_FILE_PATH, String.valueOf(content))) {
+            printSucceedAlert(REPORT_FILE_PATH);
+        } else {
+            printFailedAlert();
+        }
     }
 
     private void generateMeanMedianModeFile() {
@@ -69,9 +107,9 @@ public class App {
         StringBuilder content = new StringBuilder();
         content.append("Berikut Hasil Pengolahan Nilai:\n\n");
         content.append("Berikut hasil sebaran data nilai\n");
-        content.append(String.format("Mean: %.2f\n", mean));
-        content.append(String.format("Median: %.2f\n", median));
-        content.append(String.format("Modus: %.2f\n", mode));
+        content.append(String.format("Mean: %.2f%n", mean));
+        content.append(String.format("Median: %.2f%n", median));
+        content.append(String.format("Modus: %.2f%n", mode));
 
         if (txtFile.wrtie(STATISTICS_FILE_PATH, String.valueOf(content))) {
             printSucceedAlert(STATISTICS_FILE_PATH);
@@ -82,16 +120,14 @@ public class App {
 
     private void generateFrequencyDataFile() {
         List<Double> data = csvFile.read(SCHOOL_FILE_PATH);
-        Map<Double, Integer> frequencyMap;
+        Map<String, Integer> frequencyDistributionMap = basicStatisticCalculator.frequencyDistribution(data);
 
         // content of file txt
         StringBuilder content = new StringBuilder();
         content.append("Berikut Hasil Pengolahan Nilai:\n\n");
-        content.append("Nilai\t |\t Frekuensi\n");
+        content.append(String.format("%-10s |\t Frekuensi%n", "Nilai"));
 
-        frequencyMap.forEach((value, frequency) -> {
-            content.append(String.format("%-16s\t| %-8s\n", value, frequency));
-        });
+        frequencyDistributionMap.forEach((value, frequency) -> content.append(String.format("%-10s |\t %d %n", value, frequency)));
 
         if (txtFile.wrtie(FREQUENCY_FILE_PATH, String.valueOf(content))) {
             printSucceedAlert(FREQUENCY_FILE_PATH);
