@@ -6,6 +6,10 @@ public class BasicStatisticCalculator implements StatisticCalculator {
 
     @Override
     public double mode(List<Double> numbers) {
+        if (numbers == null) {
+            throw new NullPointerException("data cannot be null");
+        }
+
         Map<Double, Integer> frequencyNumbers = new HashMap<>();
         for (double number : numbers) {
             frequencyNumbers.put(number, frequencyNumbers.getOrDefault(number, 0) + 1);
