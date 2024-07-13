@@ -25,12 +25,10 @@ public class BasicStatisticCalculator implements StatisticCalculator {
     public double mean(List<Double> numbers) {
         validateInput(numbers);
 
-        double sumOfNumber = 0;
-        for (double number : numbers) {
-            sumOfNumber += number;
-        }
-
-        return sumOfNumber/numbers.size();
+        return numbers.stream()
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(0.0);
     }
 
     @Override
