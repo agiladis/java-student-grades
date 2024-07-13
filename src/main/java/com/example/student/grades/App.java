@@ -151,8 +151,7 @@ public class App {
         System.out.println("--------------------------------------------------------------");
         System.out.println("Aplikasi Pengolah Nilai Siswa");
         System.out.println("--------------------------------------------------------------");
-        System.out.println("File telah di generate di " + fileDir);
-        System.out.println("");
+        System.out.println("File telah di generate di " + fileDir + "\n");
         System.out.println("0. Exit");
         System.out.println("1. Kembali ke menu utama");
     }
@@ -161,8 +160,7 @@ public class App {
         System.out.println("--------------------------------------------------------------");
         System.out.println("Aplikasi Pengolah Nilai Siswa");
         System.out.println("--------------------------------------------------------------");
-        System.out.println("File tidak ditemukan");
-        System.out.println("");
+        System.out.println("File tidak ditemukan" + "\n");
         System.out.println("0. Exit");
         System.out.println("1. Kembali ke menu utama");
     }
