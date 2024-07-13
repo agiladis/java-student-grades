@@ -38,6 +38,13 @@ class BasicStatisticCalculatorTest {
     }
 
     @Test
+    @DisplayName("Negative test - Failed calculate mean with null")
+    void testMeanWithNull() {
+        NullPointerException e = Assertions.assertThrows(NullPointerException.class, () -> basicStatisticCalculator.mean(null));
+        Assertions.assertEquals("data cannot be null", e.getMessage());
+    }
+
+    @Test
     @DisplayName("Positive test - Successfull calculate mode")
     void testModeSuccess() {
         Assertions.assertEquals(8.0, basicStatisticCalculator.mode(dummyData));
