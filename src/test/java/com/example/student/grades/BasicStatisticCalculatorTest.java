@@ -1,21 +1,21 @@
 package com.example.student.grades;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BasicStatisticCalculatorTest {
     private BasicStatisticCalculator basicStatisticCalculator;
     private List<Double> dummyData;
     private List<Double> evenDummyData;
     private List<Double> singleDummyData;
+    private List<Double> emptyDummyData;
+
 
     @BeforeEach
     public void setup() {
@@ -23,71 +23,109 @@ class BasicStatisticCalculatorTest {
         dummyData = Arrays.asList(8.0, 9.0, 8.0, 9.0, 3.0, 5.0, 10.0);
         evenDummyData = Arrays.asList(8.0, 9.0, 8.0, 9.0, 3.0, 5.0, 10.0, 10.0);
         singleDummyData = Collections.singletonList(2.0);
+        emptyDummyData = new ArrayList<>();
     }
 
     @Test
-    @DisplayName("Positive test - Successful calculate median")
-    void testMedianSuccess() {
-        Assertions.assertEquals(8.0, basicStatisticCalculator.median(dummyData));
+    @DisplayName("Positive test - successful test frequency distribution")
+    void testFrequencyDistribution() {
+        Map<String, Integer> expected = new LinkedHashMap<>();
+        expected.put("<6.0", 2);
+        expected.put("8.0", 2);
+        expected.put("9.0", 2);
+        expected.put("10.0", 1);
+        assertEquals(expected, basicStatisticCalculator.frequencyDistribution(dummyData));
     }
 
     @Test
-    @DisplayName("Positive test - Successful calculate median with even data")
-    void testMedianWithEvenData() {
-        Assertions.assertEquals(8.5, basicStatisticCalculator.median(evenDummyData));
+    @DisplayName("Positive test - Successful calculate median with odd number of elements")
+    void testMedianWithOddNumbersOfElements() {
+        assertEquals(8.0, basicStatisticCalculator.median(dummyData));
+    }
+
+    @Test
+    @DisplayName("Positive test - Successful calculate median with even even number of elements")
+    void testMedianWithEvenNumbersOfElements() {
+        assertEquals(8.5, basicStatisticCalculator.median(evenDummyData));
+    }
+
+    @Test
+    @DisplayName("Positive test - Successful calculate median with single data point")
+    void testMedianWithSingleDataPoint() {
+        assertEquals(2.0, basicStatisticCalculator.median(singleDummyData));
+    }
+
+    @Test
+    @DisplayName("Negative test - Failed calculate mean with empty list")
+    void testMedianWithEmptyList() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> basicStatisticCalculator.median(emptyDummyData));
+        assertEquals("data cannot be null or empty", e.getMessage());
     }
 
     @Test
     @DisplayName("Negative test - Failed calculate mean with null")
     void testMedianWithNullData() {
-        NullPointerException e = Assertions.assertThrows(NullPointerException.class, () -> basicStatisticCalculator.median(null));
-        Assertions.assertEquals("data cannot be null", e.getMessage());
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> basicStatisticCalculator.median(null));
+        assertEquals("data cannot be null or empty", e.getMessage());
     }
 
     @Test
     @DisplayName("Positive test - Successful calculate mean")
     void testMeanSuccess() {
-        BigDecimal bd = new BigDecimal(Double.toString(basicStatisticCalculator.mean(dummyData)));
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-        Assertions.assertEquals(7.43, bd.doubleValue());
+        double result = basicStatisticCalculator.mean(dummyData);
+        assertEquals(7.43, result, 0.01);
     }
 
     @Test
     @DisplayName("Positive test - Successful calculate mean with single data point")
     void testMeanWithSingleDataPoint() {
-        Assertions.assertEquals(2.0, basicStatisticCalculator.mean(singleDummyData));
+        assertEquals(2.0, basicStatisticCalculator.mean(singleDummyData));
+    }
+
+    @Test
+    @DisplayName("Negative test - Failed calculate mean with empty list")
+    void testMeanWithEmptyList() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> basicStatisticCalculator.mean(emptyDummyData));
+        assertEquals("data cannot be null or empty", e.getMessage());
     }
 
     @Test
     @DisplayName("Negative test - Failed calculate mean with null")
     void testMeanWithNull() {
-        NullPointerException e = Assertions.assertThrows(NullPointerException.class, () -> basicStatisticCalculator.mean(null));
-        Assertions.assertEquals("data cannot be null", e.getMessage());
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> basicStatisticCalculator.mean(null));
+        assertEquals("data cannot be null or empty", e.getMessage());
     }
 
     @Test
     @DisplayName("Positive test - Successful calculate mode")
     void testModeSuccess() {
-        Assertions.assertEquals(8.0, basicStatisticCalculator.mode(dummyData));
+        assertEquals(8.0, basicStatisticCalculator.mode(dummyData));
     }
 
     @Test
     @DisplayName("Positive test - Successful calculate mode with single data point")
     void testModeWithSingleDataPoint() {
-        Assertions.assertEquals(2.0, basicStatisticCalculator.mode(singleDummyData));
+        assertEquals(2.0, basicStatisticCalculator.mode(singleDummyData));
     }
 
     @Test
     @DisplayName("Positive test - Successful calculate mode with unique data")
     void testModeWithUniqueData() {
-        List<Double> uniqueData = Arrays.asList(4.0, 3.0, 1.0, 5.0, 6.0, 2.0);
-        Assertions.assertEquals(4.0, basicStatisticCalculator.mode(uniqueData));
+        List<Double> uniqueData = Arrays.asList(1.0, 1.0, 2.0, 2.0, 3.0, 3.0);
+        assertEquals(2.0, basicStatisticCalculator.mode(uniqueData));
+    }
+
+    @Test
+    @DisplayName("Negative test - Failed calculate mode with empty list")
+    void testModeWithEmptyList() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> basicStatisticCalculator.mode(emptyDummyData));
+        assertEquals("data cannot be null or empty", e.getMessage());
     }
 
     @Test
     @DisplayName("Negative test - Failed calculate mode with null")
     void testModeWithNull() {
-        NullPointerException e = Assertions.assertThrows(NullPointerException.class, () -> basicStatisticCalculator.mode(null));
-        Assertions.assertEquals("data cannot be null", e.getMessage());
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> basicStatisticCalculator.mode(null));
+        assertEquals("data cannot be null or empty", e.getMessage());
     }
 }
