@@ -6,9 +6,7 @@ public class BasicStatisticCalculator implements StatisticCalculator {
 
     @Override
     public double mode(List<Double> numbers) {
-        if (numbers == null) {
-            throw new NullPointerException("data cannot be null");
-        }
+        validateInput(numbers);
 
         Map<Double, Integer> frequencyNumbers = new HashMap<>();
         for (double number : numbers) {
@@ -29,9 +27,7 @@ public class BasicStatisticCalculator implements StatisticCalculator {
 
     @Override
     public double mean(List<Double> numbers) {
-        if (numbers == null) {
-            throw new NullPointerException("data cannot be null");
-        }
+        validateInput(numbers);
 
         double sumOfNumber = 0;
         for (double number : numbers) {
@@ -43,9 +39,7 @@ public class BasicStatisticCalculator implements StatisticCalculator {
 
     @Override
     public double median(List<Double> numbers) {
-        if (numbers == null) {
-            throw new NullPointerException("data cannot be null");
-        }
+        validateInput(numbers);
 
         Collections.sort(numbers);
 
@@ -77,5 +71,11 @@ public class BasicStatisticCalculator implements StatisticCalculator {
         }
 
         return frequencyDistributionData;
+    }
+
+    private void validateInput(List<Double> numbers) {
+        if (numbers == null || numbers.isEmpty()) {
+            throw new IllegalArgumentException("data cannot be empty");
+        }
     }
 }
