@@ -43,6 +43,10 @@ public class BasicStatisticCalculator implements StatisticCalculator {
 
     @Override
     public double median(List<Double> numbers) {
+        if (numbers == null) {
+            throw new NullPointerException("data cannot be null");
+        }
+
         Collections.sort(numbers);
 
         int numbersSize = numbers.size();

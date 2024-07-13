@@ -14,17 +14,38 @@ import java.util.List;
 class BasicStatisticCalculatorTest {
     private BasicStatisticCalculator basicStatisticCalculator;
     private List<Double> dummyData;
+    private List<Double> evenDummyData;
     private List<Double> singleDummyData;
 
     @BeforeEach
     public void setup() {
         basicStatisticCalculator = new BasicStatisticCalculator();
         dummyData = Arrays.asList(8.0, 9.0, 8.0, 9.0, 3.0, 5.0, 10.0);
+        evenDummyData = Arrays.asList(8.0, 9.0, 8.0, 9.0, 3.0, 5.0, 10.0, 10.0);
         singleDummyData = Collections.singletonList(2.0);
     }
 
     @Test
-    @DisplayName("Positive test - Successfull calcculate mean")
+    @DisplayName("Positive test - Successful calculate median")
+    void testMedianSuccess() {
+        Assertions.assertEquals(8.0, basicStatisticCalculator.median(dummyData));
+    }
+
+    @Test
+    @DisplayName("Positive test - Successful calculate median with even data")
+    void testMedianWithEvenData() {
+        Assertions.assertEquals(8.5, basicStatisticCalculator.median(evenDummyData));
+    }
+
+    @Test
+    @DisplayName("Negative test - Failed calculate mean with null")
+    void testMedianWithNullData() {
+        NullPointerException e = Assertions.assertThrows(NullPointerException.class, () -> basicStatisticCalculator.median(null));
+        Assertions.assertEquals("data cannot be null", e.getMessage());
+    }
+
+    @Test
+    @DisplayName("Positive test - Successful calculate mean")
     void testMeanSuccess() {
         BigDecimal bd = new BigDecimal(Double.toString(basicStatisticCalculator.mean(dummyData)));
         bd = bd.setScale(2, RoundingMode.HALF_UP);
@@ -45,7 +66,7 @@ class BasicStatisticCalculatorTest {
     }
 
     @Test
-    @DisplayName("Positive test - Successfull calculate mode")
+    @DisplayName("Positive test - Successful calculate mode")
     void testModeSuccess() {
         Assertions.assertEquals(8.0, basicStatisticCalculator.mode(dummyData));
     }
@@ -57,7 +78,7 @@ class BasicStatisticCalculatorTest {
     }
 
     @Test
-    @DisplayName("Positive test - Successfull calculate mode with unique data")
+    @DisplayName("Positive test - Successful calculate mode with unique data")
     void testModeWithUniqueData() {
         List<Double> uniqueData = Arrays.asList(4.0, 3.0, 1.0, 5.0, 6.0, 2.0);
         Assertions.assertEquals(4.0, basicStatisticCalculator.mode(uniqueData));
