@@ -35,18 +35,14 @@ public class BasicStatisticCalculator implements StatisticCalculator {
     public double median(List<Double> numbers) {
         validateInput(numbers);
 
-        Collections.sort(numbers);
+        List<Double> sortedNumbers = new ArrayList<>(numbers);
+        Collections.sort(sortedNumbers);
 
-        int numbersSize = numbers.size();
-        if (numbersSize % 2 == 0) {
-            int index1 = numbersSize / 2 - 1;
-            int index2 = numbersSize / 2;
-
-            return  (numbers.get(index1) + numbers.get(index2)) / 2;
+        int size = sortedNumbers.size();
+        if (size % 2 == 0) {
+            return (sortedNumbers.get(size / 2 - 1) + sortedNumbers.get(size / 2)) / 2.0;
         } else {
-            int index = numbersSize / 2;
-
-            return numbers.get(index);
+            return sortedNumbers.get(size / 2);
         }
     }
 
