@@ -1,6 +1,8 @@
 package com.example.student.grades;
 
 import java.util.*;
+import java.util.concurrent.RecursiveTask;
+import java.util.stream.Collectors;
 
 public class BasicStatisticCalculator implements StatisticCalculator {
 
@@ -8,21 +10,15 @@ public class BasicStatisticCalculator implements StatisticCalculator {
     public double mode(List<Double> numbers) {
         validateInput(numbers);
 
-        Map<Double, Integer> frequencyNumbers = new HashMap<>();
-        for (double number : numbers) {
-            frequencyNumbers.put(number, frequencyNumbers.getOrDefault(number, 0) + 1);
-        }
+        Map<Double, Long> frequencyNumbers = numbers.stream()
+                .collect(Collectors.groupingBy(n -> n, Collectors.counting()));
 
-        double mode = 0;
-        int maxFrequency = -1;
-        for (Map.Entry<Double, Integer> entry : frequencyNumbers.entrySet()) {
-            if (entry.getValue() > maxFrequency) {
-                mode = entry.getKey();
-                maxFrequency = entry.getValue();
-            }
-        }
+        return frequencyNumbers.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .orElseThrow(() -> new IllegalArgumentException("no mode found"))
+                .getKey();
 
-        return mode;
+
     }
 
     @Override
