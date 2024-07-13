@@ -23,7 +23,7 @@ class BasicStatisticCalculatorTest {
         dummyData = Arrays.asList(8.0, 9.0, 8.0, 9.0, 3.0, 5.0, 10.0);
         evenDummyData = Arrays.asList(8.0, 9.0, 8.0, 9.0, 3.0, 5.0, 10.0, 10.0);
         singleDummyData = Collections.singletonList(2.0);
-        emptyDummyData = Arrays.asList();
+        emptyDummyData = new ArrayList<>();
     }
 
     @Test
