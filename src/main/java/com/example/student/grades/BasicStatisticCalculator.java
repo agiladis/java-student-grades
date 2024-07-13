@@ -1,7 +1,6 @@
 package com.example.student.grades;
 
 import java.util.*;
-import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collectors;
 
 public class BasicStatisticCalculator implements StatisticCalculator {
@@ -54,7 +53,7 @@ public class BasicStatisticCalculator implements StatisticCalculator {
         Map<String, Integer> distribution = new LinkedHashMap<>();
 
         for (double number : numbers) {
-            String key = number < 6.0 ? "6.0" : String.valueOf(number);
+            String key = number < 6.0 ? "<6.0" : String.valueOf(number);
             distribution.put(key, distribution.getOrDefault(key, 0) + 1);
         }
 
@@ -63,7 +62,7 @@ public class BasicStatisticCalculator implements StatisticCalculator {
 
     private void validateInput(List<Double> numbers) {
         if (numbers == null || numbers.isEmpty()) {
-            throw new IllegalArgumentException("data cannot be empty");
+            throw new IllegalArgumentException("data cannot be null or empty");
         }
     }
 }
