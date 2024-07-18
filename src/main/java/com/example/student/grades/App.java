@@ -33,37 +33,43 @@ public class App {
                     break;
                 case 1:
                     generateFrequencyDataFile();
-                    System.out.print("Pilih: ");
-                    secondChoice = scanner.nextInt();
-
-                    if (secondChoice == 0) {
-                        isProgramRunning = false;
-                    }
+                    handlePostGenerationMenu();
                     break;
                 case 2:
                     generateMeanMedianModeFile();
-                    System.out.print("Pilih: ");
-                    secondChoice = scanner.nextInt();
-
-                    if (secondChoice == 0) {
-                        isProgramRunning = false;
-                    }
+                    handlePostGenerationMenu();
                     break;
                 case 3:
                     generateReportFile();
-                    System.out.print("Pilih: ");
-                    secondChoice = scanner.nextInt();
-
-                    if (secondChoice == 0) {
-                        isProgramRunning = false;
-                    }
+                    handlePostGenerationMenu();
                     break;
                 default:
                     System.out.println("Pilihan tidak valid");
             }
         }
 
-        System.out.println("THANK YOU! SEE YA!");
+        goodbyeMessage();
+    }
+
+    private void handlePostGenerationMenu() {
+        boolean isSubMenuRunning = true;
+
+        while (isSubMenuRunning) {
+            System.out.print("Pilih: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 0:
+                    goodbyeMessage();
+                    System.exit(0);
+                    break;
+                case 1:
+                    isSubMenuRunning = false;
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid");
+            }
+        }
     }
 
     private void generateReportFile() {
@@ -90,7 +96,7 @@ public class App {
         frequencyDistributionMap.forEach((value, frequency) -> content.append(String.format("%-10s |\t %d %n", value, frequency)));
 
         // write file
-        if (txtFile.wrtie(REPORT_FILE_PATH, String.valueOf(content))) {
+        if (txtFile.wrtie(REPORT_FILE_PATH, content.toString())) {
             printSucceedAlert(REPORT_FILE_PATH);
         } else {
             printFailedAlert();
@@ -111,7 +117,7 @@ public class App {
         content.append(String.format("Median: %.2f%n", median));
         content.append(String.format("Modus: %.2f%n", mode));
 
-        if (txtFile.wrtie(STATISTICS_FILE_PATH, String.valueOf(content))) {
+        if (txtFile.wrtie(STATISTICS_FILE_PATH, content.toString())) {
             printSucceedAlert(STATISTICS_FILE_PATH);
         } else {
             printFailedAlert();
@@ -129,7 +135,7 @@ public class App {
 
         frequencyDistributionMap.forEach((value, frequency) -> content.append(String.format("%-10s |\t %d %n", value, frequency)));
 
-        if (txtFile.wrtie(FREQUENCY_FILE_PATH, String.valueOf(content))) {
+        if (txtFile.wrtie(FREQUENCY_FILE_PATH, content.toString())) {
             printSucceedAlert(FREQUENCY_FILE_PATH);
         } else {
             printFailedAlert();
@@ -163,6 +169,10 @@ public class App {
         System.out.println("File tidak ditemukan" + "\n");
         System.out.println("0. Exit");
         System.out.println("1. Kembali ke menu utama");
+    }
+
+    private void goodbyeMessage() {
+        System.out.println("THANK YOU! SEE YA!");
     }
 
     public static void main(String[] args) {
