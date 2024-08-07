@@ -20,7 +20,9 @@ public class CSVFile {
                 parseLine(line, grades);
             }
         } catch (IOException e) {
-            logger.severe("IOException occurred: " + e.getMessage());
+            String errorMessage = "IOException occurred: " + e.getMessage();
+            logger.severe(errorMessage);
+            throw new FileNotFoundException(errorMessage);
         }
 
         return grades;

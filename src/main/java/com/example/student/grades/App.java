@@ -26,24 +26,28 @@ public class App {
             int choice = getUserInput();
             if (choice == -1) continue;
 
-            switch (choice) {
-                case 0:
-                    isProgramRunning = false;
-                    break;
-                case 1:
-                    generateFrequencyDataFile();
-                    handlePostGenerationMenu();
-                    break;
-                case 2:
-                    generateMeanMedianModeFile();
-                    handlePostGenerationMenu();
-                    break;
-                case 3:
-                    generateReportFile();
-                    handlePostGenerationMenu();
-                    break;
-                default:
-                    System.out.println("Invalid input: Menu not available");
+            try {
+                switch (choice) {
+                    case 0:
+                        isProgramRunning = false;
+                        break;
+                    case 1:
+                        generateFrequencyDataFile();
+                        handlePostGenerationMenu();
+                        break;
+                    case 2:
+                        generateMeanMedianModeFile();
+                        handlePostGenerationMenu();
+                        break;
+                    case 3:
+                        generateReportFile();
+                        handlePostGenerationMenu();
+                        break;
+                    default:
+                        System.out.println("Invalid input: Menu not available");
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
             }
         }
 
