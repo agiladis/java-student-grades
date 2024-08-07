@@ -23,18 +23,8 @@ public class App {
 
         while (isProgramRunning) {
             printMainMenu();
-            System.out.print("Pilih: ");
-
-            String input = scanner.nextLine();
-            int choice = -1;
-
-
-            try {
-                choice = InputValidator.validate(input);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid input: " + e.getMessage());
-                continue;
-            }
+            int choice = getUserInput();
+            if (choice == -1) continue;
 
             switch (choice) {
                 case 0:
@@ -64,17 +54,8 @@ public class App {
         boolean isSubMenuRunning = true;
 
         while (isSubMenuRunning) {
-            System.out.print("Pilih: ");
-
-            String input = scanner.nextLine();
-            int choice = -1;
-
-            try {
-                choice = InputValidator.validate(input);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid input: " + e.getMessage());
-                continue;
-            }
+            int choice = getUserInput();
+            if (choice == -1) continue;
 
             switch (choice) {
                 case 0:
@@ -87,6 +68,18 @@ public class App {
                 default:
                     System.out.println("Invalid input: Menu not available");
             }
+        }
+    }
+
+    private int getUserInput() {
+        System.out.print("Pilih: ");
+        String input = scanner.nextLine();
+
+        try {
+            return InputValidator.validate(input);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid input: " + e.getMessage());
+            return -1;
         }
     }
 
