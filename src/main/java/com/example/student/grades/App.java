@@ -107,7 +107,7 @@ public class App {
         frequencyDistributionMap.forEach((value, frequency) -> content.append(String.format("%-10s |\t %d %n", value, frequency)));
 
         // write file
-        if (txtFile.wrtie(REPORT_FILE_PATH, content.toString())) {
+        if (txtFile.write(REPORT_FILE_PATH, content.toString())) {
             printSucceedAlert(REPORT_FILE_PATH);
         } else {
             printFailedAlert();
@@ -128,7 +128,7 @@ public class App {
         content.append(String.format("Median: %.2f%n", median));
         content.append(String.format("Modus: %.2f%n", mode));
 
-        if (txtFile.wrtie(STATISTICS_FILE_PATH, content.toString())) {
+        if (txtFile.write(STATISTICS_FILE_PATH, content.toString())) {
             printSucceedAlert(STATISTICS_FILE_PATH);
         } else {
             printFailedAlert();
@@ -146,7 +146,7 @@ public class App {
 
         frequencyDistributionMap.forEach((value, frequency) -> content.append(String.format("%-10s |\t %d %n", value, frequency)));
 
-        if (txtFile.wrtie(FREQUENCY_FILE_PATH, content.toString())) {
+        if (txtFile.write(FREQUENCY_FILE_PATH, content.toString())) {
             printSucceedAlert(FREQUENCY_FILE_PATH);
         } else {
             printFailedAlert();

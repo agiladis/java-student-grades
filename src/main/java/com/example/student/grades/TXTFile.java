@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class TXTFile {
     private static final Logger logger = Logger.getLogger(TXTFile.class.getName());
 
-    public boolean wrtie (String filePath, String content) {
+    public boolean write(String filePath, String content) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(content);
             return true;
